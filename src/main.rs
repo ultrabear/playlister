@@ -122,7 +122,7 @@ fn collect_audio_files(dir: &Utf8Path) -> io::Result<Vec<Audiophile>> {
 
                     match Audiophile::parse_tags(buf)? {
                         Ok(file) => res.push(file),
-                        Err(buf) => write_warn(format_args!("Warn: tried to treat `{buf}` as an audio file, but it could not be ordered")),
+                        Err(buf) => write_warn(format_args!("tried to treat `{buf}` as an audio file, but it could not be ordered")),
                     }
                 }
             }
