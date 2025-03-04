@@ -1,0 +1,17 @@
+RUSTBIN=playlister
+
+pkgname="${RUSTBIN}-bin"
+pkgver="0.1.0"
+pkgrel="1"
+pkgdesc="A basic CLI to make a playlist from an album"
+arch=("x86_64")
+license=("GPL-3.0-or-later")
+source=($RUSTBIN)
+sha512sums=("SKIP")
+
+
+package() {
+  mkdir -p "${pkgdir}/usr/bin"
+  cp "${srcdir}/${RUSTBIN}" "${pkgdir}/usr/bin/${RUSTBIN}"
+  chmod +x "${pkgdir}/usr/bin/${RUSTBIN}"
+}
