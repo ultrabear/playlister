@@ -74,7 +74,7 @@ impl TryFrom<Utf8PathBuf> for Audiophile {
 
 fn get_track<'a>(iter: impl Iterator<Item = (&'a str, &'a str)>) -> Option<u64> {
     for (k, v) in iter {
-        if k.to_ascii_lowercase() == "track" {
+        if k.eq_ignore_ascii_case("track") {
             let i = v.split_once('/').map_or(v, |(n, _total)| n);
             if let Ok(track) = i.parse() {
                 return Some(track);
@@ -122,7 +122,9 @@ fn collect_audio_files(dir: &Utf8Path) -> io::Result<Vec<Audiophile>> {
 
                     match Audiophile::parse_tags(buf)? {
                         Ok(file) => res.push(file),
-                        Err(buf) => write_warn(format_args!("tried to treat `{buf}` as an audio file, but it could not be ordered")),
+                        Err(buf) => write_warn(format_args!(
+                            "tried to treat `{buf}` as an audio file, but it could not be ordered"
+                        )),
                     }
                 }
             }
@@ -139,6 +141,7 @@ fn write_warn(msg: impl fmt::Display) {
 
 /// A simple CLI to generate an m3u8 playlist from a cdrip'ed album
 #[derive(clap::Parser)]
+#[clap(version)]
 struct Args {
     /// The directory to scan as an album
     #[arg(default_value = ".")]
